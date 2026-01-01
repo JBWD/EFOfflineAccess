@@ -30,7 +30,7 @@ namespace EFOfflineModels
         /// <typeparamref name="T"/>.</param>
         /// <returns>A list of <typeparamref name="T"/> instances, each representing a row in the specified <see
         /// cref="DataTable"/>. The list will be empty if the table contains no rows.</returns>
-        public static List<T> FromDataTable<T>(DataTable table)  where T : class, IDataTableModel, new()
+        public static List<T> ToModelList<T>(this DataTable table)  where T : class, IDataTableModel, new()
         {
             var map = MappingCache.Get<T>();
             var list = new List<T>();
@@ -68,7 +68,7 @@ namespace EFOfflineModels
         /// <returns>A <see cref="DataTable"/> containing one row for each item in <paramref name="items"/>, with columns
         /// corresponding to the mapped properties of <typeparamref name="T"/>.</returns>
         /// <exception cref="InvalidOperationException">Thrown if more than one property in <typeparamref name="T"/> is marked as a key property.</exception>
-        public static DataTable ToDataTable<T>(IEnumerable<T> items)where T : class, IDataTableModel
+        public static DataTable ToDataTable<T>(this IEnumerable<T> items)where T : class, IDataTableModel
         {
             var map = MappingCache.Get<T>();
             var table = new DataTable(map.ModelType.Name);
@@ -114,7 +114,7 @@ namespace EFOfflineModels
         /// <returns>A list containing deep copies of each item in the source collection. The list will be empty if the source
         /// contains no items.</returns>
         /// <exception cref="ArgumentNullException">Thrown if the source parameter is null.</exception>
-        public static List<T> Clone<T>(IEnumerable<T> source) where T : class, IDataTableModel, new()
+        public static List<T> CloneModels<T>(this IEnumerable<T> source) where T : class, IDataTableModel, new()
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
@@ -147,7 +147,7 @@ namespace EFOfflineModels
         /// <param name="source">The source object from which property values are copied. Cannot be null.</param>
         /// <returns>A new instance of type T with property values copied from the source object.</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="source"/> is null.</exception>
-        public static T Clone<T>(T source) where T : class, IDataTableModel, new()
+        public static T CloneModel<T>(this T source) where T : class, IDataTableModel, new()
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
@@ -172,7 +172,7 @@ namespace EFOfflineModels
         /// <returns>A read-only list of <see cref="PropertyChange"/> objects representing properties whose values differ between
         /// the two instances. The list will be empty if no differences are found.</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="original"/> or <paramref name="current"/> is <see langword="null"/>.</exception>
-        public static IReadOnlyList<PropertyChange> GetDifferences<T>(T original, T current)
+        public static IReadOnlyList<PropertyChange> GetDifferences<T>(this T original, T current)
     where T : class, IDataTableModel
         {
             if (original == null) throw new ArgumentNullException(nameof(original));
