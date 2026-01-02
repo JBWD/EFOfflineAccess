@@ -29,17 +29,23 @@ namespace EFOfflineModels.Mapping
         public MappingInfo(
             Type modelType,
             IReadOnlyList<PropertyMap> properties,
-            PropertyMap keyProperty)
+            PropertyMap keyProperty, string tableName)
         {
             ModelType = modelType;
             Properties = properties;
             KeyProperty = keyProperty;
+            TableName = tableName;
         }
 
         /// <summary>
         /// Gets the type of the model associated with this instance.
         /// </summary>
         public Type ModelType { get; private set; }
+        /// <summary>
+        /// Gets or sets the name of the database table associated with the model.
+        /// </summary>
+        /// <remarks>This property typically corresponds to the table name in a relational database where instances of the
+        public string TableName { get; set; }
         /// <summary>
         /// Gets the collection of property mappings associated with the current object.
         /// </summary>

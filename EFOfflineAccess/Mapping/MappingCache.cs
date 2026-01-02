@@ -48,6 +48,10 @@ namespace EFOfflineModels.Mapping
         /// <returns>A MappingInfo instance containing property mappings and key information for the specified type.</returns>
         private static MappingInfo BuildMapping(Type type)
         {
+            var tableAttr = type.GetCustomAttribute<TableNameAttribute>();
+            var tableName = tableAttr?.TableName ?? type.Name;
+
+
             var props = type.GetProperties()
                 .Where(p => p.GetCustomAttribute<ColumnNameAttribute>() != null)
                 .ToArray();
@@ -76,7 +80,7 @@ namespace EFOfflineModels.Mapping
                 maps.Add(map);
             }
 
-            return new MappingInfo(type,maps,keyMap);
+            return new MappingInfo(type,maps,keyMap, tableName);
         }
 
         /// <summary>
